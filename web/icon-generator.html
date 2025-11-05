@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Icon Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            display: block;
+        }
+        .icon-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .instructions {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎨 Kakao Calendar PWA Icon Generator</h1>
+    
+    <div class="instructions">
+        <strong>Instructions:</strong>
+        <ol>
+            <li>Click the "Generate All Icons" button below</li>
+            <li>Download each icon by clicking its download button</li>
+            <li>Save the PNG files to the <code>web/public/</code> folder</li>
+            <li>Replace the existing SVG icons</li>
+        </ol>
+    </div>
+
+    <button onclick="generateAllIcons()" style="background: #2196F3; font-size: 16px; padding: 15px 30px;">
+        🚀 Generate All Icons
+    </button>
+
+    <div id="icons-container"></div>
+
+    <script>
+        function generateAllIcons() {
+            const container = document.getElementById('icons-container');
+            container.innerHTML = '';
+            
+            // Generate different sizes
+            const sizes = [
+                { size: 192, name: 'pwa-192x192.png', label: 'PWA Icon 192x192' },
+                { size: 512, name: 'pwa-512x512.png', label: 'PWA Icon 512x512' },
+                { size: 180, name: 'apple-touch-icon.png', label: 'Apple Touch Icon 180x180' },
+                { size: 32, name: 'favicon-32x32.png', label: 'Favicon 32x32' }
+            ];
+
+            sizes.forEach(({ size, name, label }) => {
+                const section = document.createElement('div');
+                section.className = 'icon-section';
+                
+                const title = document.createElement('h3');
+                title.textContent = label;
+                section.appendChild(title);
+
+                const canvas = createIcon(size);
+                section.appendChild(canvas);
+
+                const downloadBtn = document.createElement('button');
+                downloadBtn.textContent = `📥 Download ${name}`;
+                downloadBtn.onclick = () => downloadCanvas(canvas, name);
+                section.appendChild(downloadBtn);
+
+                container.appendChild(section);
+            });
+        }
+
+        function createIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            // Background - KakaoTalk yellow
+            ctx.fillStyle = '#FAE100';
+            ctx.fillRect(0, 0, size, size);
+
+            // Draw "K" letter
+            ctx.fillStyle = '#000000';
+            ctx.font = `bold ${size * 0.4}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('K', size / 2, size * 0.38);
+
+            // Draw "Calendar" text
+            ctx.font = `${size * 0.12}px Arial`;
+            ctx.fillText('Calendar', size / 2, size * 0.72);
+
+            // Add a subtle calendar icon (optional enhancement)
+            if (size >= 192) {
+                drawCalendarIcon(ctx, size);
+            }
+
+            return canvas;
+        }
+
+        function drawCalendarIcon(ctx, size) {
+            const iconSize = size * 0.15;
+            const x = size * 0.5 - iconSize / 2;
+            const y = size * 0.82;
+
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = size * 0.01;
+            
+            // Calendar outline
+            ctx.strokeRect(x, y, iconSize, iconSize * 0.8);
+            
+            // Top bar
+            ctx.fillStyle = '#000';
+            ctx.fillRect(x, y, iconSize, iconSize * 0.15);
+            
+            // Binding rings
+            const ringY = y - size * 0.02;
+            const ringSize = size * 0.015;
+            ctx.fillStyle = '#000';
+            ctx.fillRect(x + iconSize * 0.25 - ringSize/2, ringY, ringSize, ringSize * 2);
+            ctx.fillRect(x + iconSize * 0.75 - ringSize/2, ringY, ringSize, ringSize * 2);
+        }
+
+        function downloadCanvas(canvas, filename) {
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        }
+    </script>
+</body>
+</html>
