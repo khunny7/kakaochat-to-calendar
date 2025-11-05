@@ -207,6 +207,11 @@ function App() {
         <p>
           After downloading, import the ICS file into Outlook, Google Calendar, or Apple Calendar
         </p>
+        <p className="footer-links">
+          <a href="/kakaochat-to-calendar/privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+          {' · '}
+          <a href="https://github.com/khunny7/kakaochat-to-calendar" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </p>
       </footer>
     </div>
   )

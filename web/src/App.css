@@ -298,6 +298,20 @@ section h2 {
   color: #666;
 }
 
+.footer-links {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.footer-links a {
+  color: #2196F3;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 768px) {
   .app {
     padding: 1rem;
